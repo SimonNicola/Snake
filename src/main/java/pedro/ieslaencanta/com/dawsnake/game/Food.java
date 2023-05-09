@@ -19,16 +19,5 @@ public class Food extends Entity {
         gc.fillRect(this.position.getX() * this.size.getHeight(), this.position.getY() * this.size.getWidth(), this.size.getHeight(), this.size.getWidth());
 
     }
-
-    public Food() {
-    
-    }
-       
-
-    public Food( Coordenada position, Size size, Color color, GraphicsContext context, GraphicsContext bg_canvas, Size board_size, Size cell_size) {
-        super(position, size, color, context, bg_canvas, board_size, cell_size);
-   
-    }
-    
     
 }

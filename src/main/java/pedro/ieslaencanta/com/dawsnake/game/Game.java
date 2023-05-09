@@ -28,7 +28,6 @@ import org.w3c.dom.Element;
 import pedro.ieslaencanta.com.dawsnake.Clock;
 import pedro.ieslaencanta.com.dawsnake.IWarnClock;
 
-
 ;
 
 /**
@@ -50,19 +49,20 @@ public class Game implements IWarnClock {
     private boolean debug = false;
     private boolean ispaintendbackground = false;
     private Snake snake;
-    private Food food;
-    private Coordenada c;
     protected MediaPlayer player;
+    private Entity food;
     //protected Image img;
     private Font font = new Font("8BIT WONDER Nominal", 18);
     private int score;
+    private Snake snake2;
+    private Coordenada c;
+    private Size s;
 
     private enum GameState {
         START,
         STOP
     }
     private GameState state;
-   
 
     /**
      *
@@ -85,13 +85,16 @@ public class Game implements IWarnClock {
 
         this.snake = new Snake();
         this.snake.setPart_size(this.cell_size);
+
         this.state = GameState.START;
         this.initSound();
         this.ctx.setFont(font);
         this.ctxbg.setFont(font);
-        this.c = new Coordenada(3, 3);
-        this.food = new Food(c, cell_size, Color.RED, context, bg_canvas, board_size, cell_size);
+        this.s = new Size(1, 1);
+        c = new Coordenada(2, 2);
         
+        this.food = new Entity(c, s, Color.RED);
+
     }
 
     public void start() {
@@ -106,27 +109,26 @@ public class Game implements IWarnClock {
         this.state = GameState.STOP;
         this.clock.stop();
         this.player.stop();
-       
 
     }
 
     public void OnKeyPress(KeyCode code) {
         if (this.state == GameState.START) {
-          
-           switch(code){
-               case UP:
-                   this.snake.setDirection(Direction.UP);
-                   break;
-              case DOWN:
-                   this.snake.setDirection(Direction.DOWN);
-                   break;
-               case LEFT:
-                   this.snake.setDirection(Direction.LEFT);
-                   break;
-               case RIGHT:
-                   this.snake.setDirection(Direction.RIGHT);
-                   break;
-           }
+
+            switch (code) {
+                case UP:
+                    this.snake.setDirection(Direction.UP);
+                    break;
+                case DOWN:
+                    this.snake.setDirection(Direction.DOWN);
+                    break;
+                case LEFT:
+                    this.snake.setDirection(Direction.LEFT);
+                    break;
+                case RIGHT:
+                    this.snake.setDirection(Direction.RIGHT);
+                    break;
+            }
         }
         if (this.state == GameState.STOP) {
             if (code == KeyCode.SPACE) {
@@ -152,7 +154,7 @@ public class Game implements IWarnClock {
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
-    
+
     private void initSound() {
         if (this.player == null) {
             this.player = new MediaPlayer(new Media(getClass().getResource("/music.mp3").toString()));
@@ -166,21 +168,24 @@ public class Game implements IWarnClock {
         });
         player.play();
     }
+
     /**
-     * cada vez que se produce un evento de reloj (marca la frecuencia, se ejecuta el código
+     * cada vez que se produce un evento de reloj (marca la frecuencia, se
+     * ejecuta el código
      */
     @Override
     public synchronized void TicTac() {
         Snake.State resultado;
         this.draw(ctx);
         resultado = this.snake.move(this.boardcells_size);
-    
-       //TODO
+
+        //TODO
     }
-  
+
     /**
      * para la depuración
-     * @param gc 
+     *
+     * @param gc
      */
     private void debug(GraphicsContext gc) {
         if (!this.ispaintendbackground) {
@@ -214,15 +219,15 @@ public class Game implements IWarnClock {
                 this.debug(this.ctxbg);
             }
             this.snake.draw(gc);
+            this.food.draw(gc);
             gc.strokeText("SCORE " + this.score, this.board_size.getWidth() / 2 - 50, 50);
             gc.fillText("SCORE " + this.score, this.board_size.getWidth() / 2 - 50, 50);
-            
+
         }
         if (this.state == GameState.STOP) {
             gc.strokeText("Pulsar espacio para reiniciar", 10, this.board_size.getHeight() / 2 - 20);
             gc.fillText("Pulsar espacio para reiniciar", 10, this.board_size.getHeight() / 2 - 20);
         }
-        
 
     }
 

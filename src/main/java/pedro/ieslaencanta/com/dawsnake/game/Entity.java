@@ -11,18 +11,17 @@ import javafx.scene.paint.Color;
  *
  * @author Simon Roca
  */
-public class Entity extends Game implements IDrawable {
+public class Entity implements IDrawable {
 
-    public Coordenada position;
-    public Size size;
-    public Color color;
+    protected Coordenada position;
+    protected Size size;
+    protected Color color;
 
     public Entity() {
-        super(null, null, null, null);
     }
 
-    public Entity(Coordenada position, Size size, Color color, GraphicsContext context, GraphicsContext bg_canvas, Size board_size, Size cell_size) {
-        super(context, bg_canvas, board_size, cell_size);
+    public Entity(Coordenada position, Size size, Color color) {
+
         this.position = position;
         this.size = size;
         this.color = color;
